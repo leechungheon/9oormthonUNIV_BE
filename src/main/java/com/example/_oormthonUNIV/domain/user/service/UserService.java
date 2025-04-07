@@ -15,8 +15,7 @@ public class UserService {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-    @PostMapping("join")
-    public String join(@RequestBody User user) {
+    public String register(@RequestBody User user) {
         if(user.getUsername() == null || user.getPassword() == null) {
             return "아이디와 비밀번호를 입력해주세요";
         }
