@@ -21,6 +21,9 @@ public class User {
     private String roles;
 
     public List<String> getRoles() {
+        if (roles == null || roles.isEmpty()) {
+            return List.of();
+        }
         return Arrays.asList(roles.split(","));
     }
 }

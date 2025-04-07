@@ -1,5 +1,10 @@
 package com.example._oormthonUNIV.global.jwt;
 
+import com.example._oormthonUNIV.domain.user.entity.User;
+import com.example._oormthonUNIV.global.auth.PrincipalDetails;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +13,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.io.IOException;
+
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     // JWT 인증 필터는 UsernamePasswordAuthenticationFilter를 상속받아 구현합니다.
@@ -28,14 +36,38 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        // 사용자가 입력한 사용자 이름과 비밀번호를 추출합니다.
-        String username = obtainUsername(request);
-        String password = obtainPassword(request);
+        System.out.println("JwtAuthenticationFilter : 진입");
 
-        // UsernamePasswordAuthenticationToken 객체를 생성합니다.
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+        ObjectMapper om = new ObjectMapper();
+        try {
+            User user = om.readValue(request.getInputStream(), User.class);
+            System.out.println("JwtAuthenticationFilter : " + user);
 
-        // 인증을 수행합니다.
-        return authenticationManager.authenticate(authenticationToken);
+            //폼로그인이 아니므로 토큰 만들기
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+
+            //매니저로 토큰 날리기
+            //PrincipalDetailsService가 호출되고 loadUserByUsername() 함수가 실행됨 => 인증
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+            // 인증이 성공하면 authentication 객체가 반환됩니다.
+            PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+            System.out.println("로그인 성공 : " + principalDetails.getUser().getUsername());
+
+            return authentication;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    //인증 정상 수행 후 동작하는 함수
+    //JWT 토큰을 생성하고, 이를 클라이언트에게 반환합니다.
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+            Authentication authResult) throws IOException, ServletException {
+        super.successfulAuthentication(request, response, chain, authResult);
     }
 }
+
