@@ -37,8 +37,8 @@ public class SecurityConfig {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider)) // 로그인 처리 필터
                 .addFilterAfter(new JwtAuthorizationFilter(jwtTokenProvider), JwtAuthenticationFilter.class) // 권한 처리 필터
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/**").permitAll()
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/join").permitAll()
                         .anyRequest().authenticated()
                 );
 
