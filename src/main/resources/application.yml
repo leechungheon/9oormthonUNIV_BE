@@ -21,3 +21,13 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+
+cloud:
+  aws:
+    credentials:
+      access-key: your-access-key
+      secret-key: your-secret-key
+    region:
+      static: your-region
+    s3:
+      bucket: your-bucket-name
