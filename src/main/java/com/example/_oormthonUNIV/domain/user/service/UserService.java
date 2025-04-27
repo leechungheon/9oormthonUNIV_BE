@@ -23,7 +23,7 @@ public class UserService {
             return "이미 존재하는 아이디입니다";
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setRoles("ROLE_USER");
+        user.setRole("ROLE_USER");
         userRepository.save(user);
         return "회원가입완료";
     }

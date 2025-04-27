@@ -1,4 +1,4 @@
-package com.example._oormthonUNIV.global;
+package com.example._oormthonUNIV.global.config;
 
 import com.example._oormthonUNIV.global.jwt.JwtAuthenticationFilter;
 import com.example._oormthonUNIV.global.jwt.JwtAuthorizationFilter;
@@ -38,7 +38,13 @@ public class SecurityConfig {
                 .addFilterAfter(new JwtAuthorizationFilter(jwtTokenProvider), JwtAuthenticationFilter.class) // 권한 처리 필터
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/api/v1/join").permitAll()
+                        .requestMatchers("/api/users/join").permitAll()
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/api-docs/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 );
 

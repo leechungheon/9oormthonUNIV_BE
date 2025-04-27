@@ -1,4 +1,4 @@
-package com.example._oormthonUNIV.global;
+package com.example._oormthonUNIV.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

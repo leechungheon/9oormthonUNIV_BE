@@ -4,7 +4,7 @@ import com.example._oormthonUNIV.domain.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
 
@@ -12,12 +12,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("home")
+    @GetMapping("/home")
     public String home() {
         return "home";
     }
 
-    @PostMapping("join")
+    @PostMapping("/join")
     public String join(@RequestBody User user) {
         return userService.register(user);
     }

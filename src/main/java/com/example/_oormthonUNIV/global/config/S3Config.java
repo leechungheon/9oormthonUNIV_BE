@@ -1,4 +1,4 @@
-package com.example._oormthonUNIV.global;
+package com.example._oormthonUNIV.global.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

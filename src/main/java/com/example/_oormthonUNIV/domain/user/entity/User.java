@@ -16,12 +16,8 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
     private String password;
-    private String roles;
 
-    public List<String> getRoles() {
-        if (roles == null || roles.isEmpty()) {
-            return List.of();
-        }
-        return Arrays.asList(roles.split(","));
-    }
+    @Column(nullable = false)
+    private String role;
+
 }
