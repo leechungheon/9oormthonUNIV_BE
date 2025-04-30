@@ -1,4 +1,14 @@
-FROM ubuntu:latest
-LABEL authors="leech"
+# Use an official OpenJDK runtime as a parent image
+FROM openjdk:17-jdk-slim
 
-ENTRYPOINT ["top", "-b"]
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the build output (JAR file) into the container
+COPY build/libs/*.jar app.jar
+
+# Expose the port the app runs on
+EXPOSE 8080
+
+# Run the JAR file
+ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -33,8 +33,8 @@ public class S3Config {
 
         // S3 클라이언트 생성 및 리전, 자격 증명 설정
         return AmazonS3ClientBuilder.standard()
-                .withRegion(region)  // S3의 리전 설정
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))  // 자격 증명 설정
-                .build();  // S3 클라이언트 빌드
+                .withRegion(region)// S3의 리전 설정
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))// 자격 증명 설정
+                .build();// S3 클라이언트 빌드
     }
 }

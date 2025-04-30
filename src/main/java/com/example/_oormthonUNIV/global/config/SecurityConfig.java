@@ -37,8 +37,11 @@ public class SecurityConfig {
                 .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtTokenProvider)) // 로그인 처리 필터
                 .addFilterAfter(new JwtAuthorizationFilter(jwtTokenProvider), JwtAuthenticationFilter.class) // 권한 처리 필터
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/api/users/join").permitAll()
+                        .requestMatchers(
+                                "/api/users/join",
+                                "/api/users/home",
+                                "/login"
+                        ).permitAll()
                         .requestMatchers(
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",

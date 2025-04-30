@@ -3,6 +3,7 @@ package com.example._oormthonUNIV.domain.post.controller;
 import com.example._oormthonUNIV.domain.post.dto.RequestDto;
 import com.example._oormthonUNIV.domain.post.dto.ResponseDto;
 import com.example._oormthonUNIV.domain.post.service.PostService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/posts")
 @RequiredArgsConstructor
+@Tag(name = "Post", description = "게시물 API")
 public class PostController {
     private final PostService postService;
 
@@ -25,7 +27,6 @@ public class PostController {
             @RequestPart(value = "image", required = false) MultipartFile image
     ) {
         String username = userDetails.getUsername(); // 현재 로그인한 유저의 이름 가져오기
-
         return ResponseEntity.ok(postService.createPost(request, image, username));
     }
 
