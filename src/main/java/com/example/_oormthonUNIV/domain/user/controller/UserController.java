@@ -1,18 +1,22 @@
 package com.example._oormthonUNIV.domain.user.controller;
+
 import com.example._oormthonUNIV.domain.user.entity.User;
 import com.example._oormthonUNIV.domain.user.service.UserService;
+import com.example._oormthonUNIV.global.kafka.service.KafkaProducerService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
 @Tag(name = "User", description = "회원 API")
+@RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
+    private final KafkaProducerService kafkaProducerService;
+
+    private static final String USER_REGISTRATION_TOPIC = "user-registration";
 
     @GetMapping("/home")
     public String home() {
@@ -22,5 +26,11 @@ public class UserController {
     @PostMapping("/join")
     public String join(@RequestBody User user) {
         return userService.register(user);
+    }
+
+    @PostMapping("/register")
+    public String registerUser(@RequestBody String userInfo) {
+        kafkaProducerService.sendUserRegistrationMessage(USER_REGISTRATION_TOPIC, userInfo);
+        return "User registration message sent to Kafka.";
     }
 }
