@@ -1,37 +1,29 @@
 services:
-  my-db:
-    image: mysql:latest
-    container_name: mysql-container
+  mysql:
+    image: mysql:8
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: goormthon
-    volumes:
-      - ./mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
-      - goorm-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      retries: 10
+      - backend
 
   app:
-    build: .
-    depends_on:
-      my-db:
-        condition: service_healthy
+    build:
+      context: .
+    container_name: spring-app
     ports:
       - "8080:8080"
-    networks:
-      - goorm-network
+    depends_on:
+      - mysql
     environment:
-      SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container:3306/goormthon
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/goormthon
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
-
+    networks:
+      - backend
 
 networks:
-  goorm-network:
-    driver: bridge
+  backend:
