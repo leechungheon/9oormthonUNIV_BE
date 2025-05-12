@@ -40,7 +40,8 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/users/join",
                                 "/api/users/home",
-                                "/login"
+                                "/login",
+                                "/health"
                         ).permitAll()
                         .requestMatchers(
                                 "/swagger-ui.html",

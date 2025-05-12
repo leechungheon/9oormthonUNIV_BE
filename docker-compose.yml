@@ -12,7 +12,8 @@ services:
 
   app:
     build:
-      context: .
+     context: .
+    platform: linux/amd64
     container_name: spring-app
     ports:
       - "8080:8080"
@@ -24,6 +25,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: 1234
     networks:
       - backend
+
 
 networks:
   backend:
